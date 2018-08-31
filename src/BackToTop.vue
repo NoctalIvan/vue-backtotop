@@ -33,6 +33,10 @@ export default {
       type: String,
       default: '40px',
     },
+    backToTop: {
+      type: Element,
+      default: window,
+    }
   },
   data () {
     return {
@@ -40,32 +44,32 @@ export default {
     }
   },
   mounted () {
-    window.smoothscroll = () => {
+    this.element.smoothscroll = () => {
       let currentScroll = document.documentElement.scrollTop || document.body.scrollTop
       if (currentScroll > 0) {
-        window.requestAnimationFrame(window.smoothscroll)
-        window.scrollTo(0, Math.floor(currentScroll - (currentScroll / 5)))
+        this.element.requestAnimationFrame(this.element.smoothscroll)
+        this.element.scrollTo(0, Math.floor(currentScroll - (currentScroll / 5)))
       }
     }
-    window.addEventListener('scroll', this.catchScroll)
+    this.element.addEventListener('scroll', this.catchScroll)
   },
   destroyed () {
-    window.removeEventListener('scroll', this.catchScroll)
+    this.element.removeEventListener('scroll', this.catchScroll)
   },
   methods: {
     /**
-     * Catch window scroll event 
+     * Catch element scroll event 
      * @return {void}
      */
     catchScroll () {
-      this.visible = (window.pageYOffset > parseInt(this.visibleoffset))
+      this.visible = (this.element.pageYOffset > parseInt(this.visibleoffset))
     },
     /**
      * The function who make the magics
      * @return {void}
      */
     backToTop () {
-      window.smoothscroll()
+      this.element.smoothscroll()
       this.$emit('scrolled');
     }
   }
